@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class project6 implements ActionListener {
 	JLabel ldishsearch, ldiffsearch, lLogo, limg, lbackground;
 	ImageIcon imageIconDish, imageIconLogo, imageIconBackground;
 	String playingImageDish, playingImageLogo, playingImageBackground; 
-	Image IMGBackground; 
+	Image IMGBackground, IMGLogo; 
 	
 	project6(){
 		f = new JFrame("Frying Pan");
@@ -58,7 +59,7 @@ public class project6 implements ActionListener {
 		limg = new JLabel("Dish Pic");
 		imageIconDish = new ImageIcon();
 		imageIconLogo = new ImageIcon();
-		imageIconBackground = new ImageIcon();
+		//imageIconBackground = new ImageIcon();
 
 		tx_dishsearch.setBounds(400,70,100,30);
 		tx_difficulty1.setBounds(400,140,100,30);
@@ -72,7 +73,7 @@ public class project6 implements ActionListener {
 		bDish.setBounds(420,200,100,30);
 		ldishsearch.setBounds(400,30,200,50);
 		ldiffsearch.setBounds(400,100,200,50);
-		lLogo.setBounds(30,70,300,250);
+		lLogo.setBounds(30,70,320,180);
 		limg.setBounds(800,70,300,250);
 		lbackground.setBounds(0,0,1200,850);
 		
@@ -100,21 +101,26 @@ public class project6 implements ActionListener {
 		
 		bDish.addActionListener(this);	
 		
-		try {	
-			String web = "https://www.vcg.com/creative-image/chufang/?utm_source=baidusem&utm_medium=cpc&utm_campaign=%E4%BA%A7%E5%93%81%E8%AF%8D-%E6%90%9C%E7%B4%A2%E4%B8%8B%E8%BD%BD%E8%AF%8D-A1&utm_content=%E5%9B%BE%E7%89%87-%E6%90%9C%E7%B4%A2%E8%AF%8D01&utm_term=%E8%83%8C%E6%99%AF%E5%9B%BE%E5%9B%BE%E7%89%87";
-			Document doc = Jsoup.connect(web).get();
-			Elements list = doc.select(".mask");
-			//Elements imgBackground = list.select("img");
-			playingImageBackground = list.get(1).attr("abs:src");
-			
-			urlBackground = new URL(playingImageBackground);
-			IMGBackground = ImageIO.read(urlBackground);
-			
-			IMGBackground = IMGBackground.getScaledInstance(lbackground.getWidth(),lbackground.getHeight(), Image.SCALE_SMOOTH);
-			imageIconBackground.setImage(IMGBackground);
+		try {
+			IMGBackground = ImageIO.read(new File("cooking background.jpeg"));
+			IMGBackground = IMGBackground.getScaledInstance(lbackground.getWidth(), lbackground.getHeight(), Image.SCALE_SMOOTH);
+			imageIconBackground = new ImageIcon(IMGBackground);
 			lbackground.setIcon(imageIconBackground);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		catch (IOException e3) {e3.printStackTrace();}	
+		
+		try {
+			IMGLogo = ImageIO.read(new File("FryingPan.png"));
+			IMGLogo = IMGLogo.getScaledInstance(lLogo.getWidth()+100, lLogo.getHeight()+250, Image.SCALE_SMOOTH);
+			imageIconLogo = new ImageIcon(IMGLogo);
+			lLogo.setIcon(imageIconLogo);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	public void actionPerformed(ActionEvent e) {
 		//if(e.getSource() == bDish) {
