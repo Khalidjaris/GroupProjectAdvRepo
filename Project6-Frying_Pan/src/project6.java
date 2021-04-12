@@ -28,7 +28,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 //april 12th
-
+//James
 public class project6 implements ActionListener {
 	TextField tx_dishsearch, tx_difficulty1; 
 	TextArea tx_rating, tx_duration, tx_difficulty2, tx_categories1, tx_categories2, tx_categories3, tx_recipe;
@@ -138,23 +138,23 @@ public class project6 implements ActionListener {
 			TastyUrl = "https://tasty.co/recipe/" + recipe;
 			String s = "";
 			
-			try {
-
-				Document link = Jsoup.connect(TastyUrl).get();
-				Elements title = link.select("h1");
-				title.text();
-				
-				for(Element e1: title) {
-					s = e1.wholeText();
-					System.out.println(e1.text());
-				}
-				return s;
-			}
-			catch (IOException e) {
-				return "Not found.";
-			
-		
-		}
+//			try {
+//
+//				Document link = Jsoup.connect(TastyUrl).get();
+//				Elements title = link.select("h1");
+//				title.text();
+//				
+//				for(Element e1: title) {
+//					s = e1.wholeText();
+//					System.out.println(e1.text());
+//				}
+//				return s;
+//			}
+//			catch (IOException e) {
+//				return "Not found.";
+//			
+//		
+//		}
 	}
 	
 	public static void main(String[] args) {
