@@ -27,7 +27,8 @@ import javax.swing.text.html.parser.Element;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-//april 7th
+//april 12th
+
 public class project6 implements ActionListener {
 	TextField tx_dishsearch, tx_difficulty1; 
 	TextArea tx_rating, tx_duration, tx_difficulty2, tx_categories1, tx_categories2, tx_categories3, tx_recipe;
