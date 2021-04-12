@@ -125,8 +125,36 @@ public class project6 implements ActionListener {
 		
 	}
 	public void actionPerformed(ActionEvent e) {
-		//if(e.getSource() == bDish) {
-		//}
+		
+		String TastyUrl = "";
+		
+		if(e.getSource() == bDish) {
+			String recipe = tx_dishsearch.getText();
+			
+			while(recipe.indexOf(" ")!=-1) {
+				recipe = recipe.substring(0,recipe.indexOf(" "))+"-"+recipe.substring(recipe.indexOf(" ")+1);
+			}
+			
+			TastyUrl = "https://tasty.co/recipe/" + recipe;
+			String s = "";
+			
+			try {
+
+				Document link = Jsoup.connect(TastyUrl).get();
+				Elements title = link.select("h1");
+				title.text();
+				
+				for(Element e1: title) {
+					s = e1.wholeText();
+					System.out.println(e1.text());
+				}
+				return s;
+			}
+			catch (IOException e) {
+				return "Not found.";
+			
+		
+		}
 	}
 	
 	public static void main(String[] args) {
