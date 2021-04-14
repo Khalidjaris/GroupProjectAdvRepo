@@ -1,5 +1,5 @@
 // Khalid Siraj
-// February 9, 2021
+// April 14, 2021
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,8 +13,6 @@ import org.jsoup.select.Elements;
 public class RecipeWebsites {
 
 	// T A S T Y
-
-	// TITLE
 
 	public static String TastyTitle(String topicUrl) {
 
@@ -527,12 +525,12 @@ public class RecipeWebsites {
 
 		String YummlyUrl = "";
 
-//		TastyTitle(TastyUrl);
-//		TastyTime(TastyUrl);
-//		TastyServing(TastyUrl);
-//		TastyOverview(TastyUrl);
-//		TastyIngredients(TastyUrl);
-//		TastyProcedure(TastyUrl);
+		TastyTitle(TastyUrl);
+		TastyTime(TastyUrl);
+		TastyServing(TastyUrl);
+		TastyOverview(TastyUrl);
+		TastyIngredients(TastyUrl);
+		TastyProcedure(TastyUrl);
 
 //		NetworkTitle(FoodNetworkUrl);
 //		NetworkDifficulty(FoodNetworkUrl);
