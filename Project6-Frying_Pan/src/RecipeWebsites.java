@@ -114,7 +114,7 @@ public class RecipeWebsites {
 			String ingr = "";
 
 			for(Element e: ingredients) {
-				ingr = e.wholeText();
+				ingr += e.wholeText()+ "\n" ;
 				System.out.println(e.text());
 			}
 
@@ -141,8 +141,8 @@ public class RecipeWebsites {
 			int i = 1;
 
 			for(Element e: procedure) {
-				proc = e.wholeText();
-				System.out.println(i + ". " + e.text());
+				proc += i + ". " + e.wholeText() + "\n";
+				//System.out.println(i + ". " + e.text());
 				i++;
 			}
 

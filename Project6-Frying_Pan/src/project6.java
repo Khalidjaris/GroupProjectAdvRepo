@@ -31,7 +31,8 @@ import org.jsoup.select.Elements;
 //James
 public class project6 implements ActionListener {
 	TextField tx_dishsearch, tx_difficulty1; 
-	TextArea tx_rating, tx_duration, tx_difficulty2, tx_categories1, tx_categories2, tx_categories3, tx_recipe;
+	TextArea tx_rating, tx_duration, tx_difficulty2, tx_categories1, tx_categories2, tx_categories3, tx_recipe,
+	tx_title, tx_ingredients;
 	Button bDish;
 	JFrame f;
 	String imgDish = "";
@@ -53,6 +54,8 @@ public class project6 implements ActionListener {
 		tx_categories2 = new TextArea("categories2");
 		tx_categories3 = new TextArea("categories3");	
 		tx_recipe = new TextArea("Recipe");
+		tx_ingredients = new TextArea("Ingredients");
+		tx_title = new TextArea("Title");
 		bDish = new Button("Search");
 		ldishsearch = new JLabel("Search for Dish");
 		ldiffsearch = new JLabel("Search for Difficulty");
@@ -61,20 +64,22 @@ public class project6 implements ActionListener {
 		limg = new JLabel("Dish Pic");
 		imageIconDish = new ImageIcon();
 		imageIconLogo = new ImageIcon();
-		//imageIconBackground = new ImageIcon();
+		
 
-		tx_dishsearch.setBounds(400,70,100,30);
-		tx_difficulty1.setBounds(400,140,100,30);
+		tx_dishsearch.setBounds(400,90,100,30);
+		tx_difficulty1.setBounds(400,160,100,30);
 		tx_rating.setBounds(30,350,150,50);
 		tx_duration.setBounds(30,450,150,50);
 		tx_difficulty2.setBounds(30,550,150,50);
-		tx_categories1.setBounds(900,350,150,70);
-		tx_categories2.setBounds(900,450,150,70);
-		tx_categories3.setBounds(900,550,150,70);
-		tx_recipe.setBounds(190,330,700,400);
-		bDish.setBounds(420,200,100,30);
-		ldishsearch.setBounds(400,30,200,50);
-		ldiffsearch.setBounds(400,100,200,50);
+		tx_categories1.setBounds(950,350,150,70);
+		tx_categories2.setBounds(950,450,150,70);
+		tx_categories3.setBounds(950,550,150,70);
+		tx_recipe.setBounds(580,330,350,400);
+		tx_ingredients.setBounds(200,330,350,400);
+		tx_title.setBounds(330,260,450,40);
+		bDish.setBounds(420,210,100,30);
+		ldishsearch.setBounds(400,50,200,50);
+		ldiffsearch.setBounds(400,120,200,50);
 		lLogo.setBounds(30,70,320,180);
 		limg.setBounds(800,70,300,250);
 		lbackground.setBounds(0,0,1200,850);
@@ -88,6 +93,8 @@ public class project6 implements ActionListener {
 		f.add(tx_categories2);
 		f.add(tx_categories3);
 		f.add(tx_recipe);
+		f.add(tx_ingredients);
+		f.add(tx_title);
 		f.add(bDish);
 		f.add(ldishsearch);
 		f.add(ldiffsearch);
@@ -134,27 +141,19 @@ public class project6 implements ActionListener {
 			while(recipe.indexOf(" ")!=-1) {
 				recipe = recipe.substring(0,recipe.indexOf(" "))+"-"+recipe.substring(recipe.indexOf(" ")+1);
 			}
-			
+			recipe = recipe.toLowerCase();
 			TastyUrl = "https://tasty.co/recipe/" + recipe;
-			String s = "";
 			
-//			try {
-//
-//				Document link = Jsoup.connect(TastyUrl).get();
-//				Elements title = link.select("h1");
-//				title.text();
-//				
-//				for(Element e1: title) {
-//					s = e1.wholeText();
-//					System.out.println(e1.text());
-//				}
-//				return s;
-//			}
-//			catch (IOException e) {
-//				return "Not found.";
-//			
-//		
-//		}
+			tx_title.setText(RecipeWebsites.TastyTitle(TastyUrl));		
+			
+			tx_ingredients.setText(RecipeWebsites.TastyIngredients(TastyUrl));		
+			
+			tx_recipe.setText(RecipeWebsites.TastyProcedure(TastyUrl));		
+			
+			
+		}
+		
+	
 	}
 	
 	public static void main(String[] args) {
