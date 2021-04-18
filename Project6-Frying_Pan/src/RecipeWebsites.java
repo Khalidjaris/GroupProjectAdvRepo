@@ -1,9 +1,12 @@
 // Khalid Siraj
 // April 14, 2021
+import java.awt.Image;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
+
+import javax.swing.JLabel;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -525,12 +528,12 @@ public class RecipeWebsites {
 
 		String YummlyUrl = "";
 
-		TastyTitle(TastyUrl);
-		TastyTime(TastyUrl);
-		TastyServing(TastyUrl);
-		TastyOverview(TastyUrl);
-		TastyIngredients(TastyUrl);
-		TastyProcedure(TastyUrl);
+//		TastyTitle(TastyUrl);
+//		TastyTime(TastyUrl);
+//		TastyServing(TastyUrl);
+//		TastyOverview(TastyUrl);
+//		TastyIngredients(TastyUrl);
+//		TastyProcedure(TastyUrl);
 
 //		NetworkTitle(FoodNetworkUrl);
 //		NetworkDifficulty(FoodNetworkUrl);

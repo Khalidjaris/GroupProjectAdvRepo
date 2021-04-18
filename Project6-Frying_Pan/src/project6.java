@@ -1,4 +1,6 @@
 import java.awt.Button;
+import java.awt.Color;
+import java.awt.Font;
 ///asdhakdshcakjsdcasdcjkasdjkc
 import java.awt.Frame;
 import java.awt.Image;
@@ -41,43 +43,87 @@ public class project6 implements ActionListener {
 	ImageIcon imageIconDish, imageIconLogo, imageIconBackground;
 	String playingImageDish, playingImageLogo, playingImageBackground; 
 	Image IMGBackground, IMGLogo; 
+	Color grey = new Color(45, 45, 45);
+	Color white = new Color(255, 255, 255);
 	
 	project6(){
 		f = new JFrame("Frying Pan");
-		tx_dishsearch = new TextField("Input");
-		tx_difficulty1 = new TextField("Input");
-		tx_rating = new TextArea("Rating");
-		tx_duration = new TextArea("Duration");
-		tx_difficulty2 = new TextArea("Difficulty");
-		tx_categories1 = new TextArea("categories1");
-		tx_categories2 = new TextArea("categories2");
-		tx_categories3 = new TextArea("categories3");	
-		tx_recipe = new TextArea("Recipe");
-		bDish = new Button("Search");
-		ldishsearch = new JLabel("Search for Dish");
-		ldiffsearch = new JLabel("Search for Difficulty");
-		lbackground = new JLabel("Background");
-		lLogo = new JLabel("LOGO");
-		limg = new JLabel("Dish Pic");
 		imageIconDish = new ImageIcon();
 		imageIconLogo = new ImageIcon();
 		//imageIconBackground = new ImageIcon();
 
+		tx_dishsearch = new TextField("Input");
 		tx_dishsearch.setBounds(400,70,100,30);
+		tx_dishsearch.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tx_dishsearch.setForeground(grey);
+		
+		tx_difficulty1 = new TextField("Input");
 		tx_difficulty1.setBounds(400,140,100,30);
+		tx_difficulty1.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tx_difficulty1.setForeground(grey);
+		
+		tx_rating = new TextArea("Rating");
 		tx_rating.setBounds(30,350,150,50);
+		tx_rating.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tx_rating.setForeground(grey);
+		
+		tx_duration = new TextArea("Duration");
 		tx_duration.setBounds(30,450,150,50);
+		tx_duration.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tx_duration.setForeground(grey);
+		
+		tx_difficulty2 = new TextArea("Difficulty");
 		tx_difficulty2.setBounds(30,550,150,50);
+		tx_difficulty2.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tx_difficulty2.setForeground(grey);
+		
+		tx_categories1 = new TextArea("categories1");
 		tx_categories1.setBounds(900,350,150,70);
+		tx_categories1.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tx_categories1.setForeground(grey);
+		
+		tx_categories2 = new TextArea("categories2");
 		tx_categories2.setBounds(900,450,150,70);
+		tx_categories2.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tx_categories2.setForeground(grey);
+		
+		tx_categories3 = new TextArea("categories3");	
 		tx_categories3.setBounds(900,550,150,70);
+		tx_categories3.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tx_categories3.setForeground(grey);
+		
+		tx_recipe = new TextArea("Recipe");
 		tx_recipe.setBounds(190,330,700,400);
+		tx_recipe.setFont(new Font("Calibri", Font.PLAIN, 14));
+		tx_recipe.setForeground(grey);
+		
+		bDish = new Button("Search");
 		bDish.setBounds(420,200,100,30);
+		
+		ldishsearch = new JLabel("Search for Dish");
 		ldishsearch.setBounds(400,30,200,50);
+		ldishsearch.setForeground(white);
+		ldishsearch.setFont(new Font("Futura", Font.BOLD, 16));
+		
+		ldiffsearch = new JLabel("Search for Difficulty");
 		ldiffsearch.setBounds(400,100,200,50);
-		lLogo.setBounds(30,70,320,180);
+		ldiffsearch.setForeground(white);
+		ldiffsearch.setFont(new Font("Futura", Font.BOLD, 16));
+		
+		lLogo = new JLabel("");
+		lLogo.setBounds(0,0,500,500);
+		lLogo.setForeground(white);
+		lLogo.setFont(new Font("Futura", Font.BOLD, 16));
+		
+		limg = new JLabel("Dish Pic");
 		limg.setBounds(800,70,300,250);
+		limg.setForeground(white);
+		limg.setFont(new Font("Futura", Font.BOLD, 16));
+		
+		lbackground = new JLabel("Background");
 		lbackground.setBounds(0,0,1200,850);
+		lbackground.setForeground(white);
+		lbackground.setFont(new Font("Futura", Font.BOLD, 16));
 		
 		f.add(tx_dishsearch);
 		f.add(tx_difficulty1);
@@ -114,9 +160,11 @@ public class project6 implements ActionListener {
 		}
 		
 		try {
-			IMGLogo = ImageIO.read(new File("FryingPan.png"));
-			IMGLogo = IMGLogo.getScaledInstance(lLogo.getWidth()+100, lLogo.getHeight()+250, Image.SCALE_SMOOTH);
+			IMGLogo = ImageIO.read(new File("Frying Pan Logo.png"));
+			IMGLogo = IMGLogo.getScaledInstance(IMGLogo.getWidth(lLogo) - 500, IMGLogo.getHeight(lLogo) - 420, Image.SCALE_SMOOTH);
 			imageIconLogo = new ImageIcon(IMGLogo);
+			lLogo.setHorizontalAlignment(JLabel.LEFT);
+			lLogo.setVerticalAlignment(JLabel.NORTH);
 			lLogo.setIcon(imageIconLogo);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
