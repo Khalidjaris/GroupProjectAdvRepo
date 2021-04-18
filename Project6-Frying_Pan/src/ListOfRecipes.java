@@ -3,6 +3,7 @@
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.jsoup.Jsoup;
@@ -14,31 +15,10 @@ public class ListOfRecipes {
 
 	// T A S T Y
 
-	public static String TastyBrunch(String topicUrl) {
+	public static String[] Tasty(String topicUrl) {
 
 		String s = "";
-
-		try {
-
-			Document link = Jsoup.connect(topicUrl).get();
-			Elements dishes = link.getElementsByClass("feed-item");
-
-			dishes.text();
-
-			for(Element e: dishes) {
-				s = e.wholeText();
-				System.out.println(e.text());
-			}
-			return s;
-		}
-		catch (IOException e) {
-			return "Not found.";
-		}
-	}
-	
-	public static String TastyVegetarian(String topicUrl) {
-
-		String s = "";
+		ArrayList<String> r = new ArrayList<String>();
 
 		try {
 
@@ -50,35 +30,20 @@ public class ListOfRecipes {
 			for(Element e: dishes) {
 				s = e.wholeText();
 				if(!s.contains("{{")) 
-					System.out.println(e.text());
+					System.out.println(s);
+					r.add(s);
 			}
-			return s;
+			String[] recipes = new String[r.size()];
+			r.toArray(recipes);
+			
+//			for(String t: recipes) {
+//				System.out.println(t);
+//			}
+			return recipes;
 		}
 		catch (IOException e) {
-			return "Not found.";
-		}
-	}
-	
-	public static String TastyOnePot(String topicUrl) {
-
-		String s = "";
-
-		try {
-
-			Document link = Jsoup.connect(topicUrl).get();
-			Elements dishes = link.getElementsByClass("feed-item");
-
-			dishes.text();
-
-			for(Element e: dishes) {
-				s = e.wholeText();
-				if(!s.contains("{{")) 
-					System.out.println(e.text());
-			}
-			return s;
-		}
-		catch (IOException e) {
-			return "Not found.";
+			System.out.println("Not found.");
+			return null;
 		}
 	}
 
@@ -104,9 +69,9 @@ public class ListOfRecipes {
 		catch (IOException e) {
 			return "Not found.";
 		}
-		
+
 	}
-	
+
 	// Y U M M L Y
 
 	public static String YummlyTitle(String topicUrl) {
@@ -135,17 +100,9 @@ public class ListOfRecipes {
 
 	public static void main(String[] args) {
 
-		String TastyUrl = "https://tasty.co/topic/one-pot";
+		String TastyUrl = "https://tasty.co/topic/best-vegetarian";
 		
-//			TastyBrunch(TastyUrl);
-//			TastyVegetarian(TastyUrl);
-//			TastyOnePot(TastyUrl);
-
-		String FoodNetworkUrl = "https://www.foodnetwork.com/recipes/packages/baking-guide";
-		
-			NetworkEasyBaking(FoodNetworkUrl);
-
-		String YummlyUrl = "";
+			Tasty(TastyUrl);
 
 	}
 }

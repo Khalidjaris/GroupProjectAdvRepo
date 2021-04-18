@@ -115,8 +115,7 @@ public class RecipeWebsites {
 			String ingr = "";
 
 			for(Element e: ingredients) {
-				ingr = e.wholeText();
-				System.out.println(e.text());
+				ingr += e.wholeText()+ "\n" ;
 			}
 
 			return ingr;
@@ -142,8 +141,7 @@ public class RecipeWebsites {
 			int i = 1;
 
 			for(Element e: procedure) {
-				proc = e.wholeText();
-				System.out.println(i + ". " + e.text());
+				proc += i + ". " + e.wholeText()+ "\n" ;
 				i++;
 			}
 
@@ -527,7 +525,7 @@ public class RecipeWebsites {
 		String FoodNetworkUrl = "https://www.foodnetwork.com/recipes/food-network-kitchen/chicken-tortilla-dump-dinner-5500633";
 
 		String YummlyUrl = "";
-
+//
 //		TastyTitle(TastyUrl);
 //		TastyTime(TastyUrl);
 //		TastyServing(TastyUrl);
