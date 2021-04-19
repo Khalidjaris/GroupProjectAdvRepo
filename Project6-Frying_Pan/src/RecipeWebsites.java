@@ -30,7 +30,6 @@ public class RecipeWebsites {
 
 			for(Element e: title) {
 				s = e.wholeText();
-				System.out.println(e.text());
 			}
 			return s;
 		}
@@ -53,8 +52,6 @@ public class RecipeWebsites {
 			if(time.indexOf("min") == -1)
 				time = "–––Unavailable–––";
 
-			System.out.println(time);
-
 			return time;
 		}
 		catch (IOException e) {
@@ -72,7 +69,6 @@ public class RecipeWebsites {
 
 			Elements servings = link.getElementsByClass("servings-display xs-text-2 xs-mb2");
 			String serve = servings.text();
-			System.out.println(serve);
 
 			return serve;
 
@@ -84,7 +80,9 @@ public class RecipeWebsites {
 
 	// OVERVIEW
 
+	@SuppressWarnings("unlikely-arg-type")
 	public static String TastyOverview(String topicUrl) {
+
 
 		try {
 
@@ -92,8 +90,18 @@ public class RecipeWebsites {
 
 			Elements overview = link.getElementsByClass("description xs-text-4 md-text-3 lg-text-2 xs-mb2 lg-mb2 lg-pb05");
 			String over = overview.text();
-			System.out.println(over);
-
+			
+			String temp = over;
+			
+			for(int i = 1; temp.indexOf(" ") != -1; i++) {
+				if(i % 5 != 0) 
+					temp = temp.substring(0, temp.indexOf(" ")) + "!" + temp.substring(temp.indexOf(" ") + 1); 
+				else {
+					over = over.substring(0, temp.indexOf(" ")) + "\n" + over.substring(temp.indexOf(" ") + 1); 
+					temp = temp.substring(0, temp.indexOf(" ")) + "!" + temp.substring(temp.indexOf(" ") + 1); 
+				}
+			}
+			
 			return over;
 
 		}
@@ -153,6 +161,24 @@ public class RecipeWebsites {
 		}
 	}
 
+	// IMAGE
+
+	public static String TastyImage(String topicUrl) {
+
+		try {
+
+			Document link = Jsoup.connect(topicUrl).get();
+
+			Elements overview = link.getElementsByClass("image-wrapper xs-relative xs-overflow-hidden xs-col-12 xs-height-auto xs-mb1");
+				
+			return "still unfinished";
+			
+		}
+		catch (IOException e) {
+			return "Not found.";
+		}
+	}
+	
 	//////////
 	//////////
 
@@ -172,7 +198,6 @@ public class RecipeWebsites {
 
 			for(Element e: title) {
 				s = e.wholeText();
-				System.out.println(e.text());
 			}
 			return s;
 		}
@@ -192,8 +217,6 @@ public class RecipeWebsites {
 			Element procedure = link.getElementsByClass("o-RecipeInfo__a-Description").get(0);
 
 			String proc = "Difficulty: " + procedure.text();
-
-			System.out.println(proc);
 
 			return proc;
 
@@ -215,8 +238,6 @@ public class RecipeWebsites {
 
 			String t = "Duration: " + time.text();
 
-			System.out.println(t);
-
 			return t;
 
 		}
@@ -236,8 +257,6 @@ public class RecipeWebsites {
 			Element servings = link.getElementsByClass("o-RecipeInfo__a-Description").get(3);
 
 			String serv = "Servings: " + servings.text();
-
-			System.out.println(serv);
 
 			return serv;
 
@@ -262,7 +281,6 @@ public class RecipeWebsites {
 
 			for(Element e: overview) {
 				view = e.wholeText();
-				System.out.println(e.text());
 			}
 
 			return view;
@@ -292,7 +310,6 @@ public class RecipeWebsites {
 			for(Element e: ingredients) {
 				if(x) {
 					ingr = i + ". " + e.wholeText();
-					System.out.println(i + ". " + e.text());
 				}
 				x = true;
 				i++;
@@ -321,8 +338,7 @@ public class RecipeWebsites {
 			int i = 1;
 
 			for(Element e: procedure) {
-				proc = e.wholeText();
-				System.out.println(i + ". " + e.text());
+				proc = i + ". " + e.wholeText();
 				i++;
 			}
 
@@ -353,7 +369,6 @@ public class RecipeWebsites {
 
 			for(Element e: title) {
 				s = e.wholeText();
-				System.out.println(e.text());
 			}
 			return s;
 		}
@@ -373,8 +388,6 @@ public class RecipeWebsites {
 			Element procedure = link.getElementsByClass("o-RecipeInfo__a-Description").get(0);
 
 			String proc = "Difficulty: " + procedure.text();
-
-			System.out.println(proc);
 
 			return proc;
 
@@ -396,8 +409,6 @@ public class RecipeWebsites {
 
 			String t = "Duration: " + time.text();
 
-			System.out.println(t);
-
 			return t;
 
 		}
@@ -417,8 +428,6 @@ public class RecipeWebsites {
 			Element servings = link.getElementsByClass("o-RecipeInfo__a-Description").get(3);
 
 			String serv = "Servings: " + servings.text();
-
-			System.out.println(serv);
 
 			return serv;
 
@@ -443,7 +452,6 @@ public class RecipeWebsites {
 
 			for(Element e: overview) {
 				view = e.wholeText();
-				System.out.println(e.text());
 			}
 
 			return view;
@@ -473,7 +481,6 @@ public class RecipeWebsites {
 			for(Element e: ingredients) {
 				if(x) {
 					ingr = i + ". " + e.wholeText();
-					System.out.println(i + ". " + e.text());
 				}
 				x = true;
 				i++;
@@ -502,8 +509,7 @@ public class RecipeWebsites {
 			int i = 1;
 
 			for(Element e: procedure) {
-				proc = e.wholeText();
-				System.out.println(i + ". " + e.text());
+				proc = i + ". " + e.wholeText();
 				i++;
 			}
 
@@ -529,7 +535,7 @@ public class RecipeWebsites {
 //		TastyTitle(TastyUrl);
 //		TastyTime(TastyUrl);
 //		TastyServing(TastyUrl);
-//		TastyOverview(TastyUrl);
+		TastyOverview(TastyUrl);
 //		TastyIngredients(TastyUrl);
 //		TastyProcedure(TastyUrl);
 

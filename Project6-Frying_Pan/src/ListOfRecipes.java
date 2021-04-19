@@ -15,7 +15,7 @@ public class ListOfRecipes {
 
 	// T A S T Y
 
-	public static String[] Tasty(String topicUrl) {
+	public static String[] TastyBrunch(String topicUrl) {
 
 		String s = "";
 		ArrayList<String> r = new ArrayList<String>();
@@ -30,23 +30,77 @@ public class ListOfRecipes {
 			for(Element e: dishes) {
 				s = e.wholeText();
 				if(!s.contains("{{")) 
-					System.out.println(s);
 					r.add(s);
 			}
 			String[] recipes = new String[r.size()];
 			r.toArray(recipes);
 			
-//			for(String t: recipes) {
-//				System.out.println(t);
-//			}
 			return recipes;
 		}
 		catch (IOException e) {
 			System.out.println("Not found.");
-			return null;
+			String[] n = {"Not found."};
+			return n;
 		}
 	}
 
+	public static String[] TastyVegetarian(String topicUrl) {
+
+		String s = "";
+		ArrayList<String> r = new ArrayList<String>();
+
+		try {
+
+			Document link = Jsoup.connect(topicUrl).get();
+			Elements dishes = link.getElementsByClass("item-title xs-text-4 md-text-3 extra-bold text-gray xs-mb05");
+
+			dishes.text();
+
+			for(Element e: dishes) {
+				s = e.wholeText();
+				if(!s.contains("{{")) 
+					r.add(s);
+			}
+			String[] recipes = new String[r.size()];
+			r.toArray(recipes);
+			
+			return recipes;
+		}
+		catch (IOException e) {
+			System.out.println("Not found.");
+			String[] n = {"Not found."};
+			return n;
+		}
+	}
+
+	public static String[] TastyOnePot(String topicUrl) {
+
+		String s = "";
+		ArrayList<String> r = new ArrayList<String>();
+
+		try {
+
+			Document link = Jsoup.connect(topicUrl).get();
+			Elements dishes = link.getElementsByClass("item-title xs-text-4 md-text-3 extra-bold text-gray xs-mb05");
+
+			dishes.text();
+
+			for(Element e: dishes) {
+				s = e.wholeText();
+				if(!s.contains("{{")) 
+					r.add(s);
+			}
+			String[] recipes = new String[r.size()];
+			r.toArray(recipes);
+			
+			return recipes;
+		}
+		catch (IOException e) {
+			System.out.println("Not found.");
+			String[] n = {"Not found."};
+			return n;
+		}
+	}
 	// F O O D  N E T W O R K
 
 	public static String NetworkEasyBaking(String topicUrl) {
@@ -100,9 +154,9 @@ public class ListOfRecipes {
 
 	public static void main(String[] args) {
 
-		String TastyUrl = "https://tasty.co/topic/best-vegetarian";
+		String TastyUrl = "https://tasty.co/topic/one-pot";
 		
-			Tasty(TastyUrl);
+			TastyOnePot(TastyUrl);
 
 	}
 }
