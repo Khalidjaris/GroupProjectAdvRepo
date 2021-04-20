@@ -14,7 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 //april 20th
-//James
+//James and Khalid
 
 public class project6 implements ActionListener {
 	JComboBox drop_website, drop_category, drop_dish; 
