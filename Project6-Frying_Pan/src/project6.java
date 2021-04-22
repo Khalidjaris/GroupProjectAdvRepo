@@ -17,40 +17,56 @@ import org.jsoup.select.Elements;
 //James and Khalid
 
 public class project6 implements ActionListener {
+	ArrayList<String> websites, 
+		TastyCategories, TastyRecipes;
 	JComboBox drop_website, drop_category, drop_dish; 
-	TextArea tx_recipe, tx_ingredients, tx_overview, tx_rating, tx_duration, tx_difficulty;
+	JLabel lWebsite, lWebsiteLogo, lCategory, lDishSearch, 
+		lServing, lDuration, lDifficulty, lRating, 
+		lOverview, lIngredients, lRecipe,
+		lLogo, lImg, lBackground, lTitle;
+	TextArea tx_serving, tx_duration, tx_difficulty, tx_rating, 
+		tx_recipe, tx_ingredients, tx_overview;
+	String website;
 	JButton bDish;
 	JFrame f;
-	String imgDish = "";
-	String imgLogo = "";
-	URL urlDish, urlLogo, urlBackground;
-	JLabel lCategory, lDishSearch, lRating, lDuration, lDifficulty, lOverview, lLogo, lImg, lBackground, lTitle;
-	ImageIcon imageIconDish, imageIconLogo, imageIconBackground;
-	String playingImageDish, playingImageLogo, playingImageBackground; 
-	Image IMGBackground, IMGLogo; 
+	ImageIcon imageIconWebsite, imageIconDish, imageIconLogo, imageIconBackground;
+	Image IMGBackground, IMGLogo, IMGWebsite; 
 	Color grey = new Color(45, 45, 45);
 	Color white = new Color(255, 255, 255);
-	ArrayList<String> websites, TastyCategories, TastyRecipes;
-	String website;
 
 	@SuppressWarnings("unchecked")
 	project6(){
 		f = new JFrame("Frying Pan"); 
+		imageIconWebsite = new ImageIcon();
 		imageIconDish = new ImageIcon();
 		imageIconLogo = new ImageIcon();
-		//imageIconBackground = new ImageIcon();
 
-//		websites = new ArrayList<String>();
-//		websites.add("Tasty");
-//		websites.add("Food Network");
-//		websites.add("Yummly");
-//		String[] websites2 = new String[TastyCategories.size()];
-//		TastyCategories.toArray(websites2);
-//		drop_website = new JComboBox(websites2);
-//		drop_website.setBounds(400,70,300,30);
-//		drop_website.setFont(new Font("Calibri", Font.PLAIN, 14));
-//		drop_website.setForeground(grey);
-//		drop_website.addActionListener(this);
+		lWebsite = new JLabel("Choose a Website:");
+		lWebsite.setBounds(400,30,200,50);
+		lWebsite.setForeground(white);
+		lWebsite.setFont(new Font("Futura", Font.BOLD, 16));
+		
+		lCategory = new JLabel("Choose a Category:");
+		lCategory.setBounds(400,100,200,50);
+		lCategory.setForeground(white);
+		lCategory.setFont(new Font("Futura", Font.BOLD, 16));
+
+		lDishSearch = new JLabel("Choose a Dish:");
+		lDishSearch.setBounds(400,170,200,50);
+		lDishSearch.setForeground(white);
+		lDishSearch.setFont(new Font("Futura", Font.BOLD, 16));
+		
+		websites = new ArrayList<String>();
+		websites.add("Tasty");
+		websites.add("Food Network");
+		websites.add("Yummly");
+		String[] websites2 = new String[3];
+		websites.toArray(websites2);
+		drop_website = new JComboBox(websites2);
+		drop_website.setBounds(400,70,300,30);
+		drop_website.setFont(new Font("Calibri", Font.PLAIN, 14));
+		drop_website.setForeground(grey);
+		drop_website.addActionListener(this);
 
 		TastyCategories = new ArrayList<String>();
 		TastyCategories.add("Brunch");
@@ -59,7 +75,7 @@ public class project6 implements ActionListener {
 		String[] TastyCategories2 = new String[TastyCategories.size()];
 		TastyCategories.toArray(TastyCategories2);
 		drop_category = new JComboBox(TastyCategories2);
-		drop_category.setBounds(400,70,300,30);
+		drop_category.setBounds(400,140,300,30);
 		drop_category.setFont(new Font("Calibri", Font.PLAIN, 14));
 		drop_category.setForeground(grey);
 		drop_category.addActionListener(this);
@@ -68,65 +84,96 @@ public class project6 implements ActionListener {
 		ListOfRecipes r = new ListOfRecipes();
 		String[] recipes = r.TastyBrunch(TastyUrl);
 		drop_dish = new JComboBox(recipes);
-		drop_dish.setBounds(400,140,300,30);
+		drop_dish.setBounds(400,210,300,30);
 		drop_dish.setFont(new Font("Calibri", Font.PLAIN, 14));
 		drop_dish.setForeground(grey);
 		drop_dish.addActionListener(this);
 
 		bDish = new JButton("Search");
-		bDish.setBounds(400,180,100,30);
+		bDish.setBounds(400,250,100,30);
 		bDish.isOpaque();
 		bDish.addActionListener(this);
+		
+		////////
 
-		lRating = new JLabel("Rating");
-		lRating.setBounds(30,350,150,50);
-		lRating.setFont(new Font("Futura", Font.BOLD, 20));
-		lRating.setForeground(white);
+		lServing = new JLabel("Serving");
+		lServing.setBounds(30,350,150,50);
+		lServing.setFont(new Font("Futura", Font.BOLD, 20));
+		lServing.setForeground(white);
 
 		lDuration = new JLabel("Duration");
-		lDuration.setBounds(30,470,150,50);
+		lDuration.setBounds(30,450,150,50);
 		lDuration.setFont(new Font("Futura", Font.BOLD, 20));
 		lDuration.setForeground(white);
 		
 		lDifficulty = new JLabel("Difficulty");
-		lDifficulty.setBounds(30,590,150,50);
+		lDifficulty.setBounds(30,550,150,50);
 		lDifficulty.setFont(new Font("Futura", Font.BOLD, 20));
 		lDifficulty.setForeground(white);
 		
-		lOverview = new JLabel("Difficulty");
-		lOverview.setBounds(940,590,150,50);
-		lOverview.setFont(new Font("Futura", Font.BOLD, 20));
-		lOverview.setForeground(white);
+		lRating = new JLabel("Rating");
+		lRating.setBounds(30,650,150,50);
+		lRating.setFont(new Font("Futura", Font.BOLD, 20));
+		lRating.setForeground(white);
 		
-		tx_rating = new TextArea("");
-		tx_rating.setBounds(30,400,150,50);
-		tx_rating.setFont(new Font("Calibri Light", Font.PLAIN, 12));
-		tx_rating.setForeground(grey);
-		tx_rating.setEditable(false);
+		tx_serving = new TextArea("");
+		tx_serving.setBounds(30,400,150,50);
+		tx_serving.setFont(new Font("Calibri Light", Font.PLAIN, 12));
+		tx_serving.setForeground(grey);
+		tx_serving.setEditable(false);
 		
 		tx_duration = new TextArea("");
-		tx_duration.setBounds(30,520,150,50);
+		tx_duration.setBounds(30,500,150,50);
 		tx_duration.setFont(new Font("Calibri Light", Font.PLAIN, 12));
 		tx_duration.setForeground(grey);
 		tx_duration.setEditable(false);
 
 		tx_difficulty = new TextArea("");
-		tx_difficulty.setBounds(30,640,150,50);
+		tx_difficulty.setBounds(30,600,150,50);
 		tx_difficulty.setFont(new Font("Calibri Light", Font.PLAIN, 12));
 		tx_difficulty.setForeground(grey);
 		tx_difficulty.setEditable(false);
+		
+		tx_rating = new TextArea("");
+		tx_rating.setBounds(30,700,150,50);
+		tx_rating.setFont(new Font("Calibri Light", Font.PLAIN, 12));
+		tx_rating.setForeground(grey);
+		tx_rating.setEditable(false);
+		
+		/////////
 
-		tx_ingredients = new TextArea("Ingredients");
-		tx_ingredients.setBounds(200,350,350,400);
+		lTitle = new JLabel("Title");
+		lTitle.setBounds(30,290,760,40);
+		lTitle.setForeground(white);
+		lTitle.setFont(new Font("Futura", Font.BOLD, 30));
+		lTitle.setHorizontalAlignment(JLabel.LEFT);
+		
+		lIngredients = new JLabel("Ingredients");
+		lIngredients.setBounds(200,350,200,50);
+		lIngredients.setFont(new Font("Futura", Font.BOLD, 20));
+		lIngredients.setForeground(white);
+		
+		tx_ingredients = new TextArea("");
+		tx_ingredients.setBounds(200,400,350,150);
 		tx_ingredients.setFont(new Font("Calibri Light", Font.PLAIN, 12));
 		tx_ingredients.setForeground(grey);
 		tx_ingredients.setEditable(false);
 		
-		tx_recipe = new TextArea("Recipe");
-		tx_recipe.setBounds(570,350,350,400);
+		lRecipe = new JLabel("Recipe/Procedure");
+		lRecipe.setBounds(570,350,200,50);
+		lRecipe.setFont(new Font("Futura", Font.BOLD, 20));
+		lRecipe.setForeground(white);
+		
+		tx_recipe = new TextArea("");
+		tx_recipe.setBounds(570,400,350,350);
 		tx_recipe.setFont(new Font("Calibri Light", Font.PLAIN, 12));
 		tx_recipe.setForeground(grey);
 		tx_recipe.setEditable(false);
+		
+		lOverview = new JLabel("Overview");
+		lOverview.setBounds(940,350,150,50);
+		lOverview.setFont(new Font("Futura", Font.BOLD, 20));
+		lOverview.setForeground(white);
 		
 		tx_overview = new TextArea(""); 
 		tx_overview.setBounds(940,400,250,200);
@@ -134,53 +181,50 @@ public class project6 implements ActionListener {
 		tx_overview.setForeground(grey);
 		tx_overview.setEditable(false);
 
-		lCategory = new JLabel("Choose a Category:");
-		lCategory.setBounds(400,30,200,50);
-		lCategory.setForeground(white);
-		lCategory.setFont(new Font("Futura", Font.BOLD, 16));
-
-		lDishSearch = new JLabel("Choose a Dish:");
-		lDishSearch.setBounds(400,100,200,50);
-		lDishSearch.setForeground(white);
-		lDishSearch.setFont(new Font("Futura", Font.BOLD, 16));
-
+		///////
+		
 		lLogo = new JLabel("");
 		lLogo.setBounds(30,30,500,500);
-		lLogo.setForeground(white);
-		lLogo.setFont(new Font("Futura", Font.BOLD, 16));
-
-		lTitle = new JLabel("Title");
-		lTitle.setBounds(30,290,760,40);
-		lTitle.setForeground(white);
-		lTitle.setFont(new Font("Futura", Font.BOLD, 30));
-		lTitle.setHorizontalAlignment(JLabel.LEFT);
+		
+		lWebsiteLogo = new JLabel("");
+		lWebsiteLogo.setBounds(725,30,300,300);
 
 		lImg = new JLabel("");
 		lImg.setBounds(800,70,300,250);
-		lImg.setForeground(white);
-		lImg.setFont(new Font("Futura", Font.BOLD, 16));
 
 		lBackground = new JLabel("");
 		lBackground.setBounds(0,0,1200,850);
-		lBackground.setForeground(white);
-		lBackground.setFont(new Font("Futura", Font.BOLD, 16));
 
-		f.add(drop_category);
-		f.add(drop_dish);
-		f.add(lRating);
-		f.add(lDuration);
-		f.add(lDifficulty);
-		f.add(tx_rating);
-		f.add(tx_duration);
-		f.add(tx_difficulty);
-		f.add(tx_recipe);
-		f.add(tx_ingredients);
-		f.add(tx_overview);
-		f.add(lTitle);
-		f.add(bDish);
+		// Top Section
+		f.add(lWebsite);
 		f.add(lDishSearch);
 		f.add(lCategory);
+		f.add(lWebsiteLogo);
+		f.add(drop_website);
+		f.add(drop_category);
+		f.add(drop_dish);
+		f.add(bDish);
+		
+		// Left Section
+		f.add(lServing);
+		f.add(lDuration);
+		f.add(lDifficulty);
+		f.add(lRating);
+		f.add(tx_serving);
+		f.add(tx_duration);
+		f.add(tx_difficulty);
+		f.add(tx_rating);
+
+		// Right Section
+		f.add(lTitle);
+		f.add(lIngredients);
+		f.add(tx_recipe);
+		f.add(lRecipe);
+		f.add(tx_ingredients);
+		f.add(lOverview);
+		f.add(tx_overview);
 		f.add(lLogo);
+		
 		f.add(lImg);
 		f.add(lBackground);
 
@@ -209,6 +253,17 @@ public class project6 implements ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			IMGWebsite = ImageIO.read(new File("Tasty-Logo.png"));
+			IMGWebsite = IMGWebsite.getScaledInstance(IMGWebsite.getWidth(lWebsiteLogo)/4, IMGWebsite.getHeight(lWebsiteLogo)/4, Image.SCALE_SMOOTH);
+			imageIconWebsite = new ImageIcon(IMGWebsite);
+			lWebsiteLogo.setHorizontalAlignment(JLabel.LEFT);
+			lWebsiteLogo.setVerticalAlignment(JLabel.NORTH);
+			lWebsiteLogo.setIcon(imageIconWebsite);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -221,6 +276,21 @@ public class project6 implements ActionListener {
 
 		String TastyUrl = "";
 
+//		if(e.getSource() == drop_website) {
+//
+//			String category = (String) drop_category.getSelectedItem();
+//
+//			if(category.equals("Tasty")) {
+//				
+//				website = "https://tasty.co/feature/breakfast-brunch";
+//				String[] recipes = ListOfRecipes.TastyBrunch(website);
+//				drop_dish.removeAllItems();
+//				for(String s: recipes)
+//					drop_dish.addItem(s);
+//			}
+//
+//		}
+		
 		if(e.getSource() == drop_category) {
 
 			String category = (String) drop_category.getSelectedItem();
