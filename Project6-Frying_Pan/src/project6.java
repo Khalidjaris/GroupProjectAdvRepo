@@ -13,7 +13,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-//april 20th
+//April 20th
 //James and Khalid
 
 public class project6 implements ActionListener {
