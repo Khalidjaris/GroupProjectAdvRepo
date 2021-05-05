@@ -90,11 +90,12 @@ public class RecipeWebsites {
 
 			Elements overview = link.getElementsByClass("description xs-text-4 md-text-3 lg-text-2 xs-mb2 lg-mb2 lg-pb05");
 			String over = overview.text();
-			
+
 			String temp = over;
-			
+
+//			temp = "<html>" + over + "</html>";
 			for(int i = 1; temp.indexOf(" ") != -1; i++) {
-				if(i % 5 != 0) 
+				if(i % 12 != 0) 
 					temp = temp.substring(0, temp.indexOf(" ")) + "!" + temp.substring(temp.indexOf(" ") + 1); 
 				else {
 					over = over.substring(0, temp.indexOf(" ")) + "\n" + over.substring(temp.indexOf(" ") + 1); 
@@ -102,7 +103,12 @@ public class RecipeWebsites {
 				}
 			}
 			
-			return over;
+//			over.replaceAll("\n", "<br/>");
+			
+			if(over.length() != 0)
+				return over;
+			else
+				return "–––Unavailable–––";
 
 		}
 		catch (IOException e) {
@@ -168,17 +174,18 @@ public class RecipeWebsites {
 		try {
 
 			Document link = Jsoup.connect(topicUrl).get();
+			Elements img = link.select("meta");
 
-			Elements overview = link.getElementsByClass("image-wrapper xs-relative xs-overflow-hidden xs-col-12 xs-height-auto xs-mb1");
-				
-			return "still unfinished";
-			
+			System.out.println(img.get(12).attr("content"));
+			return img.get(12).attr("content");
+
 		}
 		catch (IOException e) {
-			return "Not found.";
+			System.out.println(e.toString());
+			return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPEAAADRCAMAAAAquaQNAAAAA1BMVEX///+nxBvIAAAAR0lEQVR4nO3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABuxZIAAeHuCGgAAAAASUVORK5CYII=";
 		}
 	}
-	
+
 	//////////
 	//////////
 
@@ -322,7 +329,7 @@ public class RecipeWebsites {
 			return "Not found.";
 		}
 	}
-	
+
 	// PROCEDURE
 
 	public static String NetworkProcedure(String topicUrl) {
@@ -352,7 +359,7 @@ public class RecipeWebsites {
 
 	//////////
 	//////////
-	
+
 	// Y U M M L Y
 
 	// TITLE
@@ -528,32 +535,33 @@ public class RecipeWebsites {
 
 		String TastyUrl = "https://tasty.co/recipe/creamy-one-pot-spinach-and-egg-breakfast";
 
-		String FoodNetworkUrl = "https://www.foodnetwork.com/recipes/food-network-kitchen/chicken-tortilla-dump-dinner-5500633";
+		String FoodNetworkUrl = FoodNetworkList.NetworkBestRecipesLinks(0);
 
 		String YummlyUrl = "";
-//
-//		TastyTitle(TastyUrl);
-//		TastyTime(TastyUrl);
-//		TastyServing(TastyUrl);
-		TastyOverview(TastyUrl);
-//		TastyIngredients(TastyUrl);
-//		TastyProcedure(TastyUrl);
+		//
+		//		TastyTitle(TastyUrl);
+		//		TastyTime(TastyUrl);
+		//		TastyServing(TastyUrl);
+		//		TastyOverview(TastyUrl);
+		//		TastyIngredients(TastyUrl);
+		//		TastyProcedure(TastyUrl);
+		TastyImage(TastyUrl);
 
-//		NetworkTitle(FoodNetworkUrl);
-//		NetworkDifficulty(FoodNetworkUrl);
-//		NetworkTime(FoodNetworkUrl);
-//		NetworkServing(FoodNetworkUrl);
-//		NetworkOverview(FoodNetworkUrl);
-//		NetworkIngredients(FoodNetworkUrl);
-//		NetworkProcedure(FoodNetworkUrl);	
-		
-//		YummlyTitle(YummlyUrl);
-//		YummlyDifficulty(YummlyUrl);
-//		YummlyTime(YummlyUrl);
-//		YummlyServing(YummlyUrl);
-//		YummlyOverview(YummlyUrl);
-//		YummlyIngredients(YummlyUrl);
-//		YummlyProcedure(YummlyUrl);		
+//		System.out.println(NetworkTitle(FoodNetworkUrl));
+//		System.out.println(NetworkDifficulty(FoodNetworkUrl));
+//		System.out.println(NetworkTime(FoodNetworkUrl));
+//		System.out.println(NetworkServing(FoodNetworkUrl));
+//		System.out.println(NetworkOverview(FoodNetworkUrl));
+//		System.out.println(NetworkIngredients(FoodNetworkUrl));
+//		System.out.println(NetworkProcedure(FoodNetworkUrl));	
+
+		//		YummlyTitle(YummlyUrl);
+		//		YummlyDifficulty(YummlyUrl);
+		//		YummlyTime(YummlyUrl);
+		//		YummlyServing(YummlyUrl);
+		//		YummlyOverview(YummlyUrl);
+		//		YummlyIngredients(YummlyUrl);
+		//		YummlyProcedure(YummlyUrl);		
 
 	}
 }
