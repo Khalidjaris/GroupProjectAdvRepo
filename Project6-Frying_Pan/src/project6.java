@@ -22,7 +22,8 @@ import org.jsoup.select.Elements;
 public class project6 implements ActionListener {
 	ArrayList<String> websites, 
 		TastyCategories, TastyRecipes,
-		FoodNetworkCategory;
+		FoodNetworkCategory,
+		YummlyCategory;
 	JComboBox drop_website, drop_category, drop_dish; 
 	OutlineLabel lWebsite, lCategory, lDishSearch, 
 		lServing, lDuration, lDifficulty, lRating,
@@ -354,6 +355,30 @@ public class project6 implements ActionListener {
 					drop_category.addItem(s);
 				
 			}
+			
+			if(category.equals("Yummly")) {
+
+				String[] recipes = Yummly.ChickenIngred("https://www.yummly.com/recipes?q=best+chicken");
+				drop_dish.removeAllItems();
+				for(String s: recipes)
+					drop_dish.addItem(s);
+				setFileImage("Yummly-Logo.png", lWebsiteLogo);
+				
+				lDifficulty.setVisible(true);
+				tx_difficulty.setVisible(true);
+				lRating.setVisible(false);
+				tx_rating.setVisible(false);
+				
+				YummlyCategory = new ArrayList<String>();
+				YummlyCategory.add("Chicken");
+				String[] YummlyCategory2 = new String[YummlyCategory.size()];
+				
+				YummlyCategory.toArray(YummlyCategory2);
+				drop_category.removeAllItems();
+				for(String s: YummlyCategory2)
+					drop_category.addItem(s);
+				
+			}
 		}
 
 		if(e.getSource() == drop_category && drop_website.getSelectedItem().equals("Tasty")) {
@@ -437,6 +462,32 @@ public class project6 implements ActionListener {
 			lOverview.setText("<html>" + FoodNetwork.NetworkOverview(FoodNetworkUrl).replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>");
 
 			tx_difficulty.setText(FoodNetwork.NetworkDifficulty(FoodNetworkUrl));
+			
+		}
+		
+		if(e.getSource() == bDish && drop_website.getSelectedItem().equals("Yummly")) {
+
+			int index = drop_dish.getSelectedIndex();
+			String category = (String) drop_category.getSelectedItem();
+			String name = (String) drop_dish.getSelectedItem();
+
+			String YummlyUrl = Yummly.YummlyRecipeLinks(index, category, name);
+			
+			System.out.println(YummlyUrl);
+
+			lTitle.setText(Yummly.YummlyTitle(YummlyUrl));
+
+			tx_ingredients.setText(Yummly.YummlyIngredients(YummlyUrl));		
+
+			tx_recipe.setText(Yummly.YummlyProcedure(YummlyUrl));		
+
+			tx_duration.setText(Yummly.YummlyTime(YummlyUrl));
+
+			tx_serving.setText(Yummly.YummlyServing(YummlyUrl));
+
+			lOverview.setText("<html>" + Yummly.YummlyOverview(YummlyUrl).replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>");
+
+			tx_difficulty.setText(Yummly.YummlyDifficulty(YummlyUrl));
 			
 		}
 	}

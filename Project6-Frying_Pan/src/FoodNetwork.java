@@ -252,9 +252,9 @@ public class FoodNetwork {
 			Element url = name.tagName("a href");
 
 			s = url.html();
-			System.out.println(s);
 			s = s.substring(s.indexOf("www."), s.indexOf("target=") - 2);
 			s = "http://" + s;
+			System.out.println(s);
 
 			return s;
 		}

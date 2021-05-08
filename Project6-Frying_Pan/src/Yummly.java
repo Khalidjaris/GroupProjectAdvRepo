@@ -185,36 +185,75 @@ public class Yummly {
 	
 	// L I S T S 
 	
-	// Chicken Ingrdient
+	// Chicken Ingredients
 	
-	public static String ChickenIngred(String ChickenUrl) {
+	public static String[] ChickenIngred(String ChickenUrl) {
+		
 		String s = "";
+		ArrayList<String> r = new ArrayList<String>();
+		
 		try {
 			Document link = Jsoup.connect(ChickenUrl).get();
-			Elements list = link.getElementsByClass("div.card-grid");
-			//Elements subclass = list.select("div.carousel-card-tracker");
-			//Elements titleClass = subclass.select("div. card-info primary-dark");
-			//Elements title = titleClass.select("a").select("title");
-			Elements subsubclass = list.select("card-title two-line-truncate p2-text font-bold");
-			Element title = subsubclass.attr("title");
-			System.out.println(title.text());
-//			for(Element e: title) {
-//				s = e.wholeText();
-//				System.out.println(e.text());
-//			}
+			Elements list = link.getElementsByClass("card-title two-line-truncate p2-text font-normal");
+			
+			for(Element e: list) {
+				r.add(e.text());
+			}
+			
+			String[] recipes = new String[r.size()];
+			r.toArray(recipes);
+
+			return recipes;
+
+		}
+		catch (IOException e) {
+			System.out.println("Not found.");
+			String[] n = {"Not found."};
+			return n;
+		}
+	}
+	
+	/////////
+	/////////
+	
+	// O T H E R
+
+	// Links
+
+	public static String YummlyRecipeLinks(int index, String type, String dish) {
+
+		String s = "";
+		ArrayList<String> r = new ArrayList<String>();
+
+		try {
+
+			String topicUrl = "https://www.yummly.com/recipes?q=best+chicken";		
+
+			Document link = Jsoup.connect(topicUrl).get();
+			Element name = link.getElementsByClass("card-info-wrapper flex-row").get(index);
+			Element url = name.tagName("a href");
+
+			s = url.html();
+			s = s.substring(s.indexOf("/recipe/"), s.indexOf(">" + dish + "<") - 1);
+			s = "http://yummly.com" + s;
+			System.out.println(s);
+
 			return s;
 		}
 		catch (IOException e) {
-			return "Not found.";
+			System.out.println("Not found.");
+			String n = "Not found.";
+			return n;
 		}
-	}
+	} 
 	
 	
 	public static void main(String[] args) {
 
-		String YummlyChickenUrl = "https://www.yummly.com/ingredients/chicken";
+		String YummlyChickenUrl = "https://www.yummly.com/recipes?q=best+chicken";
 		
-		ChickenIngred(YummlyChickenUrl);
+//		ChickenIngred(YummlyChickenUrl);
+		YummlyRecipeLinks(0, "Chicken", "Southern Smothered Chicken");
 
 		//		YummlyTitle(YummlyUrl);
 		//		YummlyDifficulty(YummlyUrl);
