@@ -28,7 +28,7 @@ public class FoodNetwork {
 			title.text();
 
 			for(Element e: title) {
-				s = e.wholeText();
+				s = e.text();
 			}
 			return s;
 		}
@@ -97,7 +97,7 @@ public class FoodNetwork {
 		}	
 
 	}
-
+	
 	// OVERVIEW
 
 	public static String NetworkOverview(String topicUrl) {
@@ -111,19 +111,19 @@ public class FoodNetwork {
 			String view = "";
 
 			for(Element e: overview) {
-				view = e.wholeText();
+				view = e.html();
 			}
 
 			String temp = view;
 
-			for(int i = 1; temp.indexOf(" ") != -1; i++) {
-				if(i % 12 != 0) 
-					temp = temp.substring(0, temp.indexOf(" ")) + "!" + temp.substring(temp.indexOf(" ") + 1); 
-				else {
-					view = view.substring(0, temp.indexOf(" ")) + "\n" + view.substring(temp.indexOf(" ") + 1); 
-					temp = temp.substring(0, temp.indexOf(" ")) + "!" + temp.substring(temp.indexOf(" ") + 1); 
-				}
-			}
+//			for(int i = 1; temp.indexOf(" ") != -1; i++) {
+//				if(i % 1 != 0) 
+//					temp = temp.substring(0, temp.indexOf(" ")) + "!" + temp.substring(temp.indexOf(" ") + 1); 
+//				else {
+//					view = view.substring(0, temp.indexOf(" ")) + "\n" + view.substring(temp.indexOf(" ") + 1); 
+//					temp = temp.substring(0, temp.indexOf(" ")) + "!" + temp.substring(temp.indexOf(" ") + 1); 
+//				}
+//			}
 
 			return view;
 
@@ -192,6 +192,24 @@ public class FoodNetwork {
 		}
 	}
 
+	// IMAGE
+
+	public static String NetworkImage(String topicUrl) {
+
+		try {
+
+			Document link = Jsoup.connect(topicUrl).get();
+			Elements img = link.getElementsByClass("m-MediaBlock__a-Image a-Image");
+			String image = img.attr("src");
+			
+			return "http:" + image;
+		}
+		catch (IOException e) {
+			System.out.println(e.toString());
+			return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPEAAADRCAMAAAAquaQNAAAAA1BMVEX///+nxBvIAAAAR0lEQVR4nO3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABuxZIAAeHuCGgAAAAASUVORK5CYII=";
+		}
+	}
+	
 	//////////
 	//////////
 
@@ -270,15 +288,16 @@ public class FoodNetwork {
 
 	public static void main(String[] args) {
 
-		String FoodNetworkUrl = NetworkBestRecipesLinks(1);
+		String FoodNetworkUrl = NetworkBestRecipesLinks(6);
 
-		//		System.out.println(NetworkTitle(FoodNetworkUrl));
-		//		System.out.println(NetworkDifficulty(FoodNetworkUrl));
-		//		System.out.println(NetworkTime(FoodNetworkUrl));
-		//		System.out.println(NetworkServing(FoodNetworkUrl));
-		//		System.out.println(NetworkOverview(FoodNetworkUrl));
+//				System.out.println(NetworkTitle(FoodNetworkUrl));
+//				System.out.println(NetworkDifficulty(FoodNetworkUrl));
+//				System.out.println(NetworkTime(FoodNetworkUrl));
+//				System.out.println(NetworkServing(FoodNetworkUrl));
+//				System.out.println(NetworkOverview(FoodNetworkUrl));
+//				System.out.println(NetworkImage(FoodNetworkUrl));
 //				System.out.println(NetworkIngredients(FoodNetworkUrl));
-				System.out.println(NetworkProcedure(FoodNetworkUrl));	
+//				System.out.println(NetworkProcedure(FoodNetworkUrl));	
 
 	}
 }

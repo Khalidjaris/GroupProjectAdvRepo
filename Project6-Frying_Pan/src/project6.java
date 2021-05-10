@@ -20,19 +20,19 @@ import org.jsoup.select.Elements;
 //James and Khalid
 
 public class project6 implements ActionListener {
-	ArrayList<String> websites, 
-		TastyCategories, TastyRecipes,
+	ArrayList<String> websites,
+		TastyCategory,
 		FoodNetworkCategory,
 		YummlyCategory;
 	JComboBox drop_website, drop_category, drop_dish; 
 	OutlineLabel lWebsite, lCategory, lDishSearch, 
 		lServing, lDuration, lDifficulty, lRating,
 		lIngredients, lRecipe, lTitle, overview;
-	JLabel lWebsiteLogo, lLogo, lImg, lBackground, lOverview;
+	JLabel lWebsiteLogo, lLogo, lImg, lBackground, lOverview, lInstruction;/**/ 
 	TextArea tx_serving, tx_duration, tx_difficulty, tx_rating, 
-	tx_recipe, tx_ingredients, tx_overview;
+	tx_recipe, tx_ingredients;
 	String website;
-	JButton bDish;
+	JButton bDish, bRandom, bInstruction, bNext; /**/
 	JFrame f;
 	ImageIcon imageIconWebsite, imageIconDish, imageIconLogo, imageIconBackground;
 	Image IMGBackground, IMGLogo, IMGWebsite; 
@@ -40,6 +40,7 @@ public class project6 implements ActionListener {
 	Color white = new Color(255, 255, 255);
 	URL picURL;
 	BufferedImage image;
+	int clicked = 0;
 
 	@SuppressWarnings("unchecked")
 	project6(){
@@ -47,45 +48,65 @@ public class project6 implements ActionListener {
 		imageIconWebsite = new ImageIcon();
 		imageIconDish = new ImageIcon();
 		imageIconLogo = new ImageIcon();
+		
+		String Instru = "With the options that will appear shortly,\n 1. choose a 'Website'"
+				+ "\n 2. then a 'Category', \n3. and a 'Dish' to cook. \n Click 'Next' to choose.";
+		Instru = "<html>" + Instru.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>";
+		lInstruction = new JLabel(Instru);/**/
+		lInstruction.setBounds(370,200,500,300);/**/		
+		lInstruction.setForeground(white);/**/
+		lInstruction.setFont(new Font("Baloo", Font.BOLD, 20));/**/
+		lInstruction.setVisible(true);
+		
+		bNext = new JButton("Next");/**/
+		bNext.setBounds(370,440,100,30);/**/
+		bNext.isOpaque();/**/
+		bNext.addActionListener(this);/**/
+		bNext.setVisible(true);/**/
 
 		lWebsite = new OutlineLabel("Choose a Website:");
 		lWebsite.setBounds(370,30,200,50);
 		lWebsite.setForeground(white);
 		lWebsite.setFont(new Font("Futura", Font.BOLD, 16));
+		lWebsite.setVisible(false);/**/
 
 		lCategory = new OutlineLabel("Choose a Category:");
 		lCategory.setBounds(370,100,200,50);
 		lCategory.setForeground(white);
 		lCategory.setFont(new Font("Futura", Font.BOLD, 16));
+		lCategory.setVisible(false);/**/
 
 		lDishSearch = new OutlineLabel("Choose a Dish:");
 		lDishSearch.setBounds(370,170,200,50);
 		lDishSearch.setForeground(white);
 		lDishSearch.setFont(new Font("Futura", Font.BOLD, 16));
+		lDishSearch.setVisible(false); /**/
 
 		websites = new ArrayList<String>();
 		websites.add("Tasty");
 		websites.add("Food Network");
-		websites.add("Yummly");
-		String[] websites2 = new String[3];
+//		websites.add("Yummly");
+		String[] websites2 = new String[websites.size()];
 		websites.toArray(websites2);
 		drop_website = new JComboBox(websites2);
 		drop_website.setBounds(370,70,300,30);
 		drop_website.setFont(new Font("Calibri", Font.PLAIN, 14));
 		drop_website.setForeground(grey);
 		drop_website.addActionListener(this);
+		drop_website.setVisible(false);/**/
 
-		TastyCategories = new ArrayList<String>();
-		TastyCategories.add("Brunch");
-		TastyCategories.add("Vegetarian");
-		TastyCategories.add("One Pot");
-		String[] TastyCategories2 = new String[TastyCategories.size()];
-		TastyCategories.toArray(TastyCategories2);
-		drop_category = new JComboBox(TastyCategories2);
+		TastyCategory = new ArrayList<String>();
+		TastyCategory.add("Brunch");
+		TastyCategory.add("Vegetarian");
+		TastyCategory.add("One Pot");
+		String[] TastyCategory2 = new String[TastyCategory.size()];
+		TastyCategory.toArray(TastyCategory2);
+		drop_category = new JComboBox(TastyCategory2);
 		drop_category.setBounds(370,140,300,30);
 		drop_category.setFont(new Font("Calibri", Font.PLAIN, 14));
 		drop_category.setForeground(grey);
 		drop_category.addActionListener(this);
+		drop_category.setVisible(false);/**/
 
 		String TastyUrl = "https://tasty.co/feature/breakfast-brunch";
 		String[] recipes = Tasty.TastyBrunch(TastyUrl);
@@ -94,15 +115,29 @@ public class project6 implements ActionListener {
 		drop_dish.setFont(new Font("Calibri", Font.PLAIN, 14));
 		drop_dish.setForeground(grey);
 		drop_dish.addActionListener(this);
+		drop_dish.setVisible(false);/**/
 
 		bDish = new JButton("Search");
 		bDish.setBounds(370,250,100,30);
 		bDish.isOpaque();
 		bDish.addActionListener(this);
+		bDish.setVisible(false);/**/
+		
+		bRandom = new JButton("Random Dish"); 
+		bRandom.setBounds(695,160,130,60); 
+		bRandom.isOpaque(); 
+		bRandom.addActionListener(this); 
+		bRandom.setVisible(false);/**/
+		
+		bInstruction = new JButton("Redo Instructions");/**/
+		bInstruction.setBounds(695,220,130, 60); 
+		bInstruction.isOpaque();/**/
+		bInstruction.addActionListener(this);/**/
+		bInstruction.setVisible(false);/**/
 
 		////////
 
-		lServing = new OutlineLabel("Serving");
+		lServing = new OutlineLabel("Servings");
 		lServing.setBounds(30,350,150,50);
 		lServing.setFont(new Font("Futura", Font.BOLD, 20));
 		lServing.setForeground(white);
@@ -153,43 +188,38 @@ public class project6 implements ActionListener {
 		/////////
 
 		lTitle = new OutlineLabel("Title");
-		lTitle.setBounds(30,290,760,40);
+		lTitle.setBounds(30,290,1000,40);
 		lTitle.setForeground(white);
-		lTitle.setFont(new Font("Futura", Font.BOLD, 30));
+		lTitle.setFont(new Font("Futura", Font.BOLD, 27));
 		lTitle.setHorizontalAlignment(JLabel.LEFT);
 
 		lIngredients = new OutlineLabel("Ingredients");
-		lIngredients.setBounds(200,450,200,50);
+		lIngredients.setBounds(200,490,200,50);
 		lIngredients.setFont(new Font("Futura", Font.BOLD, 20));
 		lIngredients.setForeground(white);
 
 		tx_ingredients = new TextArea("");
-		tx_ingredients.setBounds(200,500,350,250);
+		tx_ingredients.setBounds(200,540,350,210);
 		tx_ingredients.setFont(new Font("Calibri Light", Font.PLAIN, 12));
 		tx_ingredients.setForeground(grey);
 		tx_ingredients.setEditable(false);
 
 		lRecipe = new OutlineLabel("Recipe/Procedure");
-		lRecipe.setBounds(570,450,200,50);
+		lRecipe.setBounds(570,490,200,50);
 		lRecipe.setFont(new Font("Futura", Font.BOLD, 20));
 		lRecipe.setForeground(white);
 
 		tx_recipe = new TextArea("");
-		tx_recipe.setBounds(570,500,600,250);
+		tx_recipe.setBounds(570,540,600,210);
 		tx_recipe.setFont(new Font("Calibri Light", Font.PLAIN, 12));
 		tx_recipe.setForeground(grey);
 		tx_recipe.setEditable(false);
 
 		lOverview = new JLabel("");
-		lOverview.setBounds(250,355,700,100);
-		lOverview.setFont(new Font("Futura", Font.BOLD, 17));
+		lOverview.setBounds(240,325,750,180);
+		lOverview.setFont(new Font("Futura", Font.BOLD, 14));
 		lOverview.setForeground(white);
-
-//		tx_overview = new TextArea(""); 
-//		tx_overview.setBounds(940,400,250,200);
-//		tx_overview.setFont(new Font("Calibri Light", Font.PLAIN, 13));
-//		tx_overview.setForeground(grey);
-//		tx_overview.setEditable(false);
+		lOverview.setVerticalTextPosition(JLabel.TOP);
 
 		///////
 
@@ -197,15 +227,16 @@ public class project6 implements ActionListener {
 		lLogo.setBounds(30,30,300,240);
 
 		lWebsiteLogo = new JLabel("");
-		lWebsiteLogo.setBounds(695,30,130,130);
+		lWebsiteLogo.setBounds(695,25,130,130);
 
 		lImg = new JLabel("");
-		lImg.setBounds(850,30,310,310);
+		lImg.setBounds(850,25,305,305);
 		
 		lBackground = new JLabel("");
 		lBackground.setBounds(0,0,1200,850);
 
 		// Top Section
+		f.add(lInstruction); /**/
 		f.add(lWebsite);
 		f.add(lDishSearch);
 		f.add(lCategory);
@@ -214,6 +245,9 @@ public class project6 implements ActionListener {
 		f.add(drop_category);
 		f.add(drop_dish);
 		f.add(bDish);
+		f.add(bInstruction); /**/
+		f.add(bNext); /**/
+		f.add(bRandom);
 
 		// Left Section
 		f.add(lServing);
@@ -232,7 +266,6 @@ public class project6 implements ActionListener {
 		f.add(lRecipe);
 		f.add(tx_ingredients);
 		f.add(lOverview);
-//		f.add(tx_overview);
 		f.add(lLogo);
 
 		f.add(lImg);
@@ -286,8 +319,10 @@ public class project6 implements ActionListener {
 		catch (IOException e1) {
 			System.err.println(e1.getMessage());
 		}
-
-		imageIconDish.setImage(image.getScaledInstance(lImg.getWidth(), lImg.getHeight(), Image.SCALE_SMOOTH));
+		
+		double ratio = (double)image.getWidth()/lImg.getWidth();
+		
+		imageIconDish.setImage(image.getScaledInstance(lImg.getWidth(), (int)(image.getHeight()/ratio), Image.SCALE_SMOOTH));
 
 		imageIconDish.getImage().flush();
 		
@@ -311,76 +346,158 @@ public class project6 implements ActionListener {
 
 		String TastyUrl = "";
 
+		// INSTRUCTIONS
+				
+		if(e.getSource() == bNext && clicked == 0) {/**/
+			bNext.setBounds(370,130,100,30);/**/
+			lInstruction.setVisible(false);/**/
+			lWebsite.setVisible(true);/**/
+			drop_website.setVisible(true);/**/
+			clicked++;
+		}
+		
+		else if(e.getSource() == bNext && clicked == 1) {/**/
+			bNext.setBounds(370,180,100,30);/**/
+			lCategory.setVisible(true);/**/
+			drop_category.setVisible(true);/**/
+			clicked++;
+		}
+		
+		else if(e.getSource() == bNext && clicked == 2) {/**/
+			bNext.setVisible(false);/**/
+			bDish.setVisible(true);/**/
+			lDishSearch.setVisible(true);/**/
+			drop_dish.setVisible(true);/**/
+			bInstruction.setVisible(true);/**/
+			bRandom.setVisible(true);
+			
+			String Instru = "Details about the dish you choose will appear after pressing 'Search'"
+				+ "\n Hit 'Random Dish' to see what Frying Pan has to offer!";
+			Instru = "<html>" + Instru.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>";
+			lInstruction.setText(Instru);
+			lInstruction.setVisible(true);/**/
+			lInstruction.setBounds(250,200,1000,300);/**/	
+			
+			clicked++;
+		}
+				
+		// RANDOM DISH GENERATOR
+		
+		if(e.getSource() == bRandom) {
+			
+			int x = (int)(Math.random() * drop_website.getItemCount());	
+			drop_website.setSelectedIndex(x);	
+			
+			int y = (int)(Math.random() * drop_category.getItemCount());	
+			drop_category.setSelectedIndex(y);	
+			
+			int z = (int)(Math.random() * drop_dish.getItemCount());
+			drop_dish.setSelectedIndex(z);	
+			
+			bDish.doClick();
+			
+		}
+		
+		// INSTRUCTIONS BUTTON
+		
+		if(e.getSource() == bInstruction) {
+			new project6();	
+			
+		}
+		
+		// WEBSITE DROPDOWN LIST
+		
 		if(e.getSource() == drop_website) {
 
-			String category = (String) drop_website.getSelectedItem();
+			String w = (String) drop_website.getSelectedItem();
 
-			if(category.equals("Tasty")) {
+			if(w.equals("Tasty")) {
 				
+				// Layout Update
+				setFileImage("Tasty-Logo.png", lWebsiteLogo);
+				lDifficulty.setVisible(false);
+				tx_difficulty.setVisible(false);
+				lRating.setVisible(false);
+				tx_rating.setVisible(false);
+				lCategory.setText("Choose an Category:");
+				
+				// Dish update
 				website = "https://tasty.co/feature/breakfast-brunch";
 				String[] recipes = Tasty.TastyBrunch(website);
 				drop_dish.removeAllItems();
 				for(String s: recipes)
 					drop_dish.addItem(s);
-				setFileImage("Tasty-Logo.png", lWebsiteLogo);
 				
-				lDifficulty.setVisible(false);
-				tx_difficulty.setVisible(false);
+				// Category update
+				String[] TastyCategory2 = new String[TastyCategory.size()];
+				TastyCategory.toArray(TastyCategory2);
+				int num = drop_category.getItemCount();
+				for(String s: TastyCategory2)
+					drop_category.addItem(s);
+				drop_category.removeItemAt(0);
+				while(drop_category.getItemAt(0) != "Brunch") 
+					drop_category.removeItemAt(0);
+			}
+				
+			if(w.equals("Food Network")) {
+				
+				// Layout Update
+				setFileImage("FoodNetwork-Logo.png", lWebsiteLogo);
+				lDifficulty.setVisible(true);
+				tx_difficulty.setVisible(true);
 				lRating.setVisible(false);
 				tx_rating.setVisible(false);
+				lCategory.setText("Choose an Category:");
+
 				
-				f.repaint();
-			}
-
-			if(category.equals("Food Network")) {
-
+				// Dish update
 				String[] recipes = FoodNetwork.NetworkBestRecipes();
 				drop_dish.removeAllItems();
 				for(String s: recipes)
 					drop_dish.addItem(s);
-				setFileImage("FoodNetwork-Logo.png", lWebsiteLogo);
 				
-				lDifficulty.setVisible(true);
-				tx_difficulty.setVisible(true);
-				lRating.setVisible(true);
-				tx_rating.setVisible(true);
-				
+				// Category Update
 				FoodNetworkCategory = new ArrayList<String>();
 				FoodNetworkCategory.add("List of Best Recipes");
 				String[] FoodNetworkCategory2 = new String[FoodNetworkCategory.size()];
-				
 				FoodNetworkCategory.toArray(FoodNetworkCategory2);
 				drop_category.removeAllItems();
 				for(String s: FoodNetworkCategory2)
 					drop_category.addItem(s);
-				
 			}
 			
-			if(category.equals("Yummly")) {
-
-				String[] recipes = Yummly.ChickenIngred("https://www.yummly.com/recipes?q=best+chicken");
-				drop_dish.removeAllItems();
-				for(String s: recipes)
-					drop_dish.addItem(s);
-				setFileImage("Yummly-Logo.png", lWebsiteLogo);
-				
-				lDifficulty.setVisible(true);
-				tx_difficulty.setVisible(true);
-				lRating.setVisible(false);
-				tx_rating.setVisible(false);
-				
-				YummlyCategory = new ArrayList<String>();
-				YummlyCategory.add("Chicken");
-				String[] YummlyCategory2 = new String[YummlyCategory.size()];
-				
-				YummlyCategory.toArray(YummlyCategory2);
-				drop_category.removeAllItems();
-				for(String s: YummlyCategory2)
-					drop_category.addItem(s);
-				
-			}
+//			if(w.equals("Yummly")) {
+//
+//				// Layout Update
+//				setFileImage("Yummly-Logo.png", lWebsiteLogo);				
+//				lDifficulty.setVisible(true);
+//				tx_difficulty.setVisible(true);
+//				lRating.setVisible(false);
+//				tx_rating.setVisible(false);
+//				lCategory.setText("Choose an Ingredient:");
+//				
+//				// Dish update
+//				String[] recipes = Yummly.ChickenIngred("https://www.yummly.com/recipes?q=best+chicken");
+//				drop_dish.removeAllItems();
+//				for(String s: recipes)
+//					drop_dish.addItem(s);
+//				
+//				// Category update
+//				YummlyCategory = new ArrayList<String>();
+//				YummlyCategory.add("Chicken");
+//				YummlyCategory.add("Asparugus");
+//				String[] YummlyCategory2 = new String[YummlyCategory.size()];
+//				YummlyCategory.toArray(YummlyCategory2);
+//				while(drop_category.getItemCount() != 0)
+//					drop_category.removeItemAt(0);
+//				for(String s: YummlyCategory2)
+//					drop_category.addItem(s);
+//				
+//			}
 		}
-
+		
+		// CATEGORY DROPDOWN LIST
+		
 		if(e.getSource() == drop_category && drop_website.getSelectedItem().equals("Tasty")) {
 
 			String category = (String) drop_category.getSelectedItem();
@@ -411,9 +528,13 @@ public class project6 implements ActionListener {
 			}
 		}
 
+		// DISH DROPDOWN
+
 		if(e.getSource() == bDish && drop_website.getSelectedItem().equals("Tasty")) {
 
 			String recipe = (String) drop_dish.getSelectedItem();
+			
+			lInstruction.setVisible(false);/**/
 
 			while(recipe.indexOf(" ") != -1) {
 				recipe = recipe.substring(0,recipe.indexOf(" ")) + "-" + recipe.substring(recipe.indexOf(" ") + 1);
@@ -445,6 +566,8 @@ public class project6 implements ActionListener {
 
 			int index = drop_dish.getSelectedIndex();
 
+			lInstruction.setVisible(false);/**/
+
 			String FoodNetworkUrl = FoodNetwork.NetworkBestRecipesLinks(index);
 			
 			System.out.println(FoodNetworkUrl);
@@ -463,32 +586,33 @@ public class project6 implements ActionListener {
 
 			tx_difficulty.setText(FoodNetwork.NetworkDifficulty(FoodNetworkUrl));
 			
+			setDishImage(FoodNetwork.NetworkImage(FoodNetworkUrl));
+
 		}
 		
-		if(e.getSource() == bDish && drop_website.getSelectedItem().equals("Yummly")) {
-
-			int index = drop_dish.getSelectedIndex();
-			String category = (String) drop_category.getSelectedItem();
-			String name = (String) drop_dish.getSelectedItem();
-
-			String YummlyUrl = Yummly.YummlyRecipeLinks(index, category, name);
-			
-			System.out.println(YummlyUrl);
-
-			lTitle.setText(Yummly.YummlyTitle(YummlyUrl));
-
-			tx_ingredients.setText(Yummly.YummlyIngredients(YummlyUrl));		
-
-			tx_recipe.setText(Yummly.YummlyProcedure(YummlyUrl));		
-
-			tx_duration.setText(Yummly.YummlyTime(YummlyUrl));
-
-			tx_serving.setText(Yummly.YummlyServing(YummlyUrl));
-
-			lOverview.setText("<html>" + Yummly.YummlyOverview(YummlyUrl).replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>");
-
-			tx_difficulty.setText(Yummly.YummlyDifficulty(YummlyUrl));
-			
-		}
+//		if(e.getSource() == bDish && drop_website.getSelectedItem().equals("Yummly")) {
+//
+//			int index = drop_dish.getSelectedIndex();
+//			String category = (String) drop_category.getSelectedItem();
+//
+//			lInstruction.setVisible(false);/**/
+//
+//			String YummlyUrl = Yummly.YummlyRecipeLinks(index, category);
+//			
+//			System.out.println(YummlyUrl);
+//
+//			lTitle.setText(Yummly.YummlyTitle(YummlyUrl));
+//
+//			tx_ingredients.setText(Yummly.YummlyIngredients(YummlyUrl));		
+//
+//			tx_recipe.setText(Yummly.YummlyProcedure(YummlyUrl));		
+//
+//			tx_duration.setText(Yummly.YummlyTime(YummlyUrl));
+//
+//			tx_serving.setText(Yummly.YummlyServing(YummlyUrl));
+//
+//			lOverview.setText("<html>" + Yummly.YummlyOverview(YummlyUrl).replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>");
+//			
+//		}
 	}
 }

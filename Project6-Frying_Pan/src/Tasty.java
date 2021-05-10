@@ -13,7 +13,7 @@ import org.jsoup.select.Elements;
 
 public class Tasty {
 
-	// P A R S E D  D A T A
+	// T A S T Y
 
 	// Title
 
@@ -25,8 +25,6 @@ public class Tasty {
 
 			Document link = Jsoup.connect(topicUrl).get();
 			Elements title = link.select("h1");
-
-			title.text();
 
 			for(Element e: title) {
 				s = e.wholeText();
@@ -77,6 +75,28 @@ public class Tasty {
 			return "Not found.";
 		}
 	}
+	
+	// Rating*
+
+	public static String TastyRating(String topicUrl) {
+
+		String s = "";
+
+		try {
+
+			Document link = Jsoup.connect(topicUrl).get();
+			Elements rating = link.select("span");
+			Elements rate = rating.select("h4");
+
+			for(Element e: rate)
+				s += e.text();
+			
+			return s;
+		}
+		catch (IOException e) {
+			return "Not found.";
+		}
+	}
 
 	// Overview
 
@@ -93,14 +113,14 @@ public class Tasty {
 
 			String temp = over;
 
-			for(int i = 1; temp.indexOf(" ") != -1; i++) {
-				if(i % 12 != 0) 
-					temp = temp.substring(0, temp.indexOf(" ")) + "!" + temp.substring(temp.indexOf(" ") + 1); 
-				else {
-					over = over.substring(0, temp.indexOf(" ")) + "\n" + over.substring(temp.indexOf(" ") + 1); 
-					temp = temp.substring(0, temp.indexOf(" ")) + "!" + temp.substring(temp.indexOf(" ") + 1); 
-				}
-			}
+//			for(int i = 1; temp.indexOf(" ") != -1; i++) {
+//				if(i % 15 != 0) 
+//					temp = temp.substring(0, temp.indexOf(" ")) + "!" + temp.substring(temp.indexOf(" ") + 1); 
+//				else {
+//					over = over.substring(0, temp.indexOf(" ")) + "\n" + over.substring(temp.indexOf(" ") + 1); 
+//					temp = temp.substring(0, temp.indexOf(" ")) + "!" + temp.substring(temp.indexOf(" ") + 1); 
+//				}
+//			}
 
 			if(over.length() != 0)
 				return over;
@@ -201,7 +221,7 @@ public class Tasty {
 			Elements dishes = link.getElementsByClass("feed-item");
 
 			dishes.text();
-
+			
 			for(Element e: dishes) {
 				s = e.wholeText();
 				if(!s.contains("{{")) 
@@ -288,28 +308,85 @@ public class Tasty {
 	
 	public static String Filter(String topicUrl) {
 		
-		if(topicUrl.equals("https://tasty.co/recipe/breakfast-sausage-egg-cups"))
+		// Special Characters
+		if(topicUrl.contains(",") || topicUrl.contains("‘") || topicUrl.contains("’") || topicUrl.contains("(") || topicUrl.contains("& ")) {
+			
+			// Comma
+			for(int i = topicUrl.indexOf(","); topicUrl.indexOf(",") != -1; i = topicUrl.indexOf(",")) // 6.1
+				topicUrl = topicUrl.substring(0, i) + topicUrl.substring(i + 1);
+			
+			// Apostrophes
+			for(int i = topicUrl.indexOf("‘"); topicUrl.indexOf("‘") != -1; i = topicUrl.indexOf("‘")) 
+				topicUrl = topicUrl.substring(0, i) + topicUrl.substring(i + 1);	
+			for(int i = topicUrl.indexOf("’"); topicUrl.indexOf("’") != -1; i = topicUrl.indexOf("’")) 
+				topicUrl = topicUrl.substring(0, i) + topicUrl.substring(i + 1);
+			
+			// Brackets
+			while(topicUrl.indexOf("(") != -1) 
+				topicUrl = topicUrl.substring(0, topicUrl.indexOf("(") - 1);
+			
+			// Special
+			for(int i = topicUrl.indexOf("&-"); topicUrl.indexOf("&-") != -1; i = topicUrl.indexOf("&-")) 
+				topicUrl = topicUrl.substring(0, i) + topicUrl.substring(i + 1);
+		}
+		
+		// Brunch
+		if(topicUrl.equals("https://tasty.co/recipe/breakfast-sausage-egg-cups")) 
 			return "https://tasty.co/recipe/breakfast-sausage-egg-cup";
+		
+		if(topicUrl.equals("https://tasty.co/recipe/egg-in-hole-layered-breakfast-bake"))
+			return "https://tasty.co/recipe/ham-cheese-egg-in-the-hole-layered-bake";
+		
+		if(topicUrl.equals("https://tasty.co/recipe/ham-and-cheese-lattice-quiche")) 
+			return "https://tasty.co/recipe/quiche-with-ham-and-cheese-lattice";
+		
+		if(topicUrl.equals("https://tasty.co/recipe/crème-brûlée-french-toast")) 
+			return "https://tasty.co/recipe/creme-brulee-french-toast";
+		
+		// Vegetarian 
+		if(topicUrl.equals("https://tasty.co/recipe/how-to-make-the-best-brownies")) 
+			return "https://tasty.co/recipe/ultimate-brownies";
+		
+		if(topicUrl.equals("https://tasty.co/recipe/how-to-make-cinnamon-rolls")) 
+			return "https://tasty.co/recipe/tasty-101-cinnamon-rolls";
+		
+		if(topicUrl.equals("https://tasty.co/recipe/how-to-make-macarons")) 
+			return "https://tasty.co/recipe/macarons";
+		
+		if(topicUrl.equals("https://tasty.co/recipe/fluffy-pancakes")) 
+			return "https://tasty.co/recipe/fluffy-perfect-pancakes";
+		
+		if(topicUrl.equals("https://tasty.co/recipe/the-best-ever-cauliflower-pizza-crust")) 
+			return "https://tasty.co/recipe/cauliflower-crust-pizza";
+		
+		if(topicUrl.equals("https://tasty.co/recipe/the-best-chocolate-cake")) 
+			return "https://tasty.co/recipe/the-ultimate-chocolate-cake";
+		
+		// One Pot
+		if(topicUrl.equals("https://tasty.co/recipe/one-pot-shrimp-and-spinach-fettuccine-alfredo-pasta")) 
+			return "https://tasty.co/recipe/one-pot-shrimp-and-spinach-pasta";
 					
-		else
-			return topicUrl;
+		return topicUrl;
+		
+		// Minso, Talal, Mohammed, Iman, Nofe, Lara, Ghazal, Lozi, Hashem
 		
 	}
 
 	public static void main(String[] args) {
 
-		String TastyUrl = "https://tasty.co/topic/one-pot";
+		String TastyUrl = "https://tasty.co/feature/breakfast-brunch";
 
 //		TastyTitle(TastyUrl);
 //		TastyTime(TastyUrl);
 //		TastyServing(TastyUrl);
 //		TastyOverview(TastyUrl);
+//		TastyRating(TastyUrl);
 //		TastyIngredients(TastyUrl);
 //		TastyProcedure(TastyUrl);
 //		TastyImage(TastyUrl);
 		
-		TastyOnePot(TastyUrl);
-
+//		TastyOnePot(TastyUrl);
+//		System.out.println(Filter("https://tasty.co/recipe/easy-one-pot-mac-‘n’-cheese"));
 
 	}
 }

@@ -24,36 +24,14 @@ public class Yummly {
 			Document link = Jsoup.connect(topicUrl).get();
 			Elements title = link.select("h1");
 
-			title.text();
-
 			for(Element e: title) {
-				s = e.wholeText();
+				s += e.wholeText();
 			}
 			return s;
 		}
 		catch (IOException e) {
 			return "Not found.";
 		}
-	}
-
-	// DIFFICULTY
-
-	public static String YummlyDifficulty(String topicUrl) {
-
-		try {
-
-			Document link = Jsoup.connect(topicUrl).get();
-
-			Element procedure = link.getElementsByClass("o-RecipeInfo__a-Description").get(0);
-
-			String proc = "Difficulty: " + procedure.text();
-
-			return proc;
-
-		}
-		catch (IOException e) {
-			return "Not found.";
-		}		
 	}
 
 	// TIME
@@ -63,10 +41,34 @@ public class Yummly {
 		try {
 
 			Document link = Jsoup.connect(topicUrl).get();
+			
+			Element time = link.getElementsByClass("recipe-summary-item unit h2-text").get(0);
 
-			Element time = link.getElementsByClass("o-RecipeInfo__a-Description").get(1);
+			String t = time.text();
+			
+			t = t.substring(0, t.indexOf("M")) + " " + t.substring(t.indexOf("M"));
 
-			String t = "Duration: " + time.text();
+			return t;
+
+		}
+		catch (IOException e) {
+			return "Not found.";
+		}	
+	}
+	
+	// CALORIES
+
+	public static String YummlyCalories(String topicUrl) {
+
+		try {
+
+			Document link = Jsoup.connect(topicUrl).get();
+			
+			Element time = link.getElementsByClass("recipe-summary-item nutrition h2-text").get(0);
+
+			String t = time.text();
+			
+			t = t.substring(0, t.indexOf("C")) + " " + t.substring(t.indexOf("C"));
 
 			return t;
 
@@ -83,18 +85,17 @@ public class Yummly {
 		try {
 
 			Document link = Jsoup.connect(topicUrl).get();
+			
+			Element time = link.getElementsByClass("servings micro-caps font-bold").get(0);
 
-			Element servings = link.getElementsByClass("o-RecipeInfo__a-Description").get(3);
-
-			String serv = "Servings: " + servings.text();
-
-			return serv;
+			String t = time.text();
+						
+			return t;
 
 		}
 		catch (IOException e) {
 			return "Not found.";
 		}	
-
 	}
 
 	// OVERVIEW
@@ -103,14 +104,14 @@ public class Yummly {
 
 		try {
 
-			Document link = Jsoup.connect(topicUrl).get();
+			Document link = Jsoup.connect(topicUrl + "#directions").get();
 
-			Elements overview = link.getElementsByClass("o-AssetDescription__a-Description");
+			Elements overview = link.select("p");
 
 			String view = "";
 
 			for(Element e: overview) {
-				view = e.wholeText();
+				view += e.html() + "\n";
 			}
 
 			return view;
@@ -130,19 +131,13 @@ public class Yummly {
 
 			Document link = Jsoup.connect(topicUrl).get();
 
-			Elements ingredients = link.getElementsByClass("o-Ingredients__a-Ingredient");
+			Elements ingredients = link.getElementsByClass("IngredientLine");
+			Elements ingred = ingredients.select("li");
 
 			String ingr = "";
 
-			int i = 0;
-			boolean x = false;
-
-			for(Element e: ingredients) {
-				if(x) {
-					ingr = i + ". " + e.wholeText();
-				}
-				x = true;
-				i++;
+			for(Element e: ingred) {
+				ingr += e.wholeText() + "\n";
 			}
 
 			return ingr;
@@ -180,6 +175,30 @@ public class Yummly {
 		}
 	}
 
+	// IMAGE
+	
+	public static String YummlyImage(String topicUrl) {
+
+		try { 
+
+			Document link = Jsoup.connect(topicUrl).timeout(0).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0").get();
+			Elements image = link.getElementsByClass("dpsp-pin-it-wrapper alignnone size-full wp-image-51549"); 
+			Elements img = image.select("src");
+
+			String cover = "";
+			
+			for(Element e: img) 
+				cover += img.text();
+			
+			return cover;
+		}
+			
+		catch (IOException e) {
+			System.out.println(e.toString());
+			return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPEAAADRCAMAAAAquaQNAAAAA1BMVEX///+nxBvIAAAAR0lEQVR4nO3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABuxZIAAeHuCGgAAAAASUVORK5CYII=";
+		}
+	}
+	
 	///////
 	///////
 	
@@ -220,9 +239,9 @@ public class Yummly {
 
 	// Links
 
-	public static String YummlyRecipeLinks(int index, String type, String dish) {
+	public static String YummlyRecipeLinks(int index, String type) {
 
-		String s = "";
+		String http = "";
 		ArrayList<String> r = new ArrayList<String>();
 
 		try {
@@ -231,14 +250,16 @@ public class Yummly {
 
 			Document link = Jsoup.connect(topicUrl).get();
 			Element name = link.getElementsByClass("card-info-wrapper flex-row").get(index);
-			Element url = name.tagName("a href");
+			Element url = name.tagName("href");
 
-			s = url.html();
-			s = s.substring(s.indexOf("/recipe/"), s.indexOf(">" + dish + "<") - 1);
-			s = "http://yummly.com" + s;
-			System.out.println(s);
+			String dish = url.text();
+			dish = dish.substring(0, dish.indexOf(" ") + 1);
+			http = url.html();
+			http = http.substring(http.indexOf("/recipe/"));
+			http = http.substring(http.indexOf("/recipe/"), http.indexOf(dish) - 2);
+			http = "http://yummly.com" + http;
 
-			return s;
+			return http;
 		}
 		catch (IOException e) {
 			System.out.println("Not found.");
@@ -251,17 +272,22 @@ public class Yummly {
 	public static void main(String[] args) {
 
 		String YummlyChickenUrl = "https://www.yummly.com/recipes?q=best+chicken";
-		
-//		ChickenIngred(YummlyChickenUrl);
-		YummlyRecipeLinks(0, "Chicken", "Southern Smothered Chicken");
+		String YummlyUrl = "http://yummly.com/recipe/Chicken-Adobo-2671007";
 
-		//		YummlyTitle(YummlyUrl);
-		//		YummlyDifficulty(YummlyUrl);
-		//		YummlyTime(YummlyUrl);
-		//		YummlyServing(YummlyUrl);
-		//		YummlyOverview(YummlyUrl);
-		//		YummlyIngredients(YummlyUrl);
-		//		YummlyProcedure(YummlyUrl);		
+		String[] str = ChickenIngred(YummlyChickenUrl);
+
+//		for(String s: str)
+//			System.out.println(s);
+//		System.out.println(YummlyRecipeLinks(1, "Chicken"));
+		
+				System.out.println(YummlyOverview(YummlyUrl));
+//		System.out.println(YummlyTitle(YummlyUrl));
+//		System.out.println(YummlyTime(YummlyUrl));
+//		System.out.println(YummlyCalories(YummlyUrl));
+//		System.out.println(YummlyServing(YummlyUrl));
+//		System.out.println(YummlyIngredients(YummlyUrl));
+//				YummlyProcedure(YummlyUrl);		
+//		System.out.println(YummlyImage(YummlyUrl));		
 	}
 	
 }
